@@ -155,7 +155,7 @@ export function useParticleScroll(scope, signals) {
   useEffect(() => {
     const media = gsap.matchMedia()
     media.add(
-      '(min-width: 950px) and (prefers-reduced-motion: no-preference)',
+      '(prefers-reduced-motion: no-preference)',
       () => {
         ScrollTrigger.create({
           trigger: scope.current,

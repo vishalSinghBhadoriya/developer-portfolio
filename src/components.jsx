@@ -7,6 +7,7 @@ import { magneticHandlers, useMedia } from './motion'
 export class ErrorBoundary extends Component {
   state = { failed: false }
   static getDerivedStateFromError() { return { failed: true } }
+  componentDidCatch() { this.props.onError?.() }
   render() { return this.state.failed ? this.props.fallback : this.props.children }
 }
 

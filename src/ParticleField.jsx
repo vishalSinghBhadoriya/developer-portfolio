@@ -7,7 +7,7 @@ import { useMedia } from './motion'
 const ParticleScene = lazy(() => import('./ParticleScene'))
 const prints = ['particles-ribbon.webp', 'particles-data.webp', 'particles-geometry.webp'].map(publicAsset)
 
-function PointPrint({ form, className, count, live, signals }) {
+function PointPrint({ form, className, count, live, signals, frameInterval = 0 }) {
   const canvas = useRef(null)
   useEffect(() => {
     const context = canvas.current.getContext('2d')
@@ -22,6 +22,10 @@ function PointPrint({ form, className, count, live, signals }) {
     let previous = performance.now()
 
     function draw(time) {
+      if (live && time > previous && time - previous < frameInterval) {
+        frame = requestAnimationFrame(draw)
+        return
+      }
       const input = signals?.current
       elapsed += Math.min(50, time - previous) * .001 * (input?.speed ?? 1)
       previous = time
@@ -57,7 +61,7 @@ function PointPrint({ form, className, count, live, signals }) {
     }
     draw(previous)
     return () => cancelAnimationFrame(frame)
-  }, [form, count, live, signals])
+  }, [form, count, live, signals, frameInterval])
   return <canvas ref={canvas} width={560} height={560} className={className} />
 }
 
@@ -65,47 +69,53 @@ export default function ParticleField({ signals, form = 0, interactive = false, 
   const field = useRef(null)
   const reduced = useMedia('(prefers-reduced-motion: reduce)')
   const desktop = useMedia('(min-width: 950px) and (pointer: fine)')
-  const [available, setAvailable] = useState(false)
+  const [available, setAvailable] = useState(null)
   const [onscreen, setOnscreen] = useState(false)
-  const [ready, setReady] = useState(false)
+  const [ready, setReady] = useState(null)
   const report = useCallback(value => setReady(value), [])
-  const canRender = interactive && !reduced && (desktop || demo)
+  const canRender = interactive && !reduced && (desktop || demo || variant === 'hero')
 
   useEffect(() => {
-    if (!canRender || !onscreen || (navigator.deviceMemory ?? 8) < 4) return
+    if (!canRender || !onscreen || available !== null) return
+    if ((navigator.deviceMemory ?? 8) < 4) {
+      setAvailable(false)
+      return
+    }
     try {
       const check = document.createElement('canvas').getContext('webgl2')
-      if (!check) return
+      if (!check) { setAvailable(false); return }
       check.getExtension('WEBGL_lose_context')?.loseContext()
       setAvailable(true)
     } catch {
       setAvailable(false)
     }
-  }, [canRender, onscreen])
+  }, [canRender, onscreen, available])
 
   useEffect(() => {
     if (!interactive) return
     const observer = new IntersectionObserver(([entry]) => {
       setOnscreen(entry.isIntersecting)
-      if (!entry.isIntersecting) setReady(false)
+      if (!entry.isIntersecting) setReady(null)
     })
     observer.observe(field.current)
     return () => observer.disconnect()
   }, [interactive])
 
   const showScene = canRender && available && onscreen
+  const mobileFallback = !desktop && variant === 'hero' && canRender && onscreen && (available === false || ready === false)
   const printClass = 'particle-print' + (showScene && ready ? ' is-hidden' : '')
   return <div ref={field} className={'particle-field particle-' + variant} aria-hidden="true"
     data-renderer={showScene && ready ? 'webgl' : 'canvas'}>
     <div className="particle-halo" />
-    {demo ? <PointPrint className={printClass} form={form} count={Math.round((count ?? 8000) * .20)}
+    {demo || mobileFallback ? <PointPrint className={printClass} form={form}
+      count={demo ? Math.round((count ?? 8000) * .20) : 450} frameInterval={mobileFallback ? 33 : 0}
       live={onscreen && !reduced && !(showScene && ready)} signals={signals} />
       : <img className={printClass} src={prints[form]} alt="" width="560" height="560"
         loading={variant === 'contact' ? 'lazy' : 'eager'} fetchPriority={variant === 'hero' ? 'high' : 'auto'} decoding="async" />}
     {showScene && <div className="particle-scene">
-      <ErrorBoundary fallback={null}>
+      <ErrorBoundary fallback={null} onError={() => setAvailable(false)}>
         <Suspense fallback={null}>
-          <ParticleScene signals={signals} onReady={report} count={count} variant={variant} />
+          <ParticleScene signals={signals} onReady={report} count={count} variant={variant} compact={!desktop} />
         </Suspense>
       </ErrorBoundary>
     </div>}

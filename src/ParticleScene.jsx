@@ -146,9 +146,9 @@ function RenderStatus({ onReady }) {
   return null
 }
 
-export default function ParticleScene({ signals, onReady, count: density, variant }) {
-  const count = density ?? (variant === 'contact' ? 4600 : (navigator.hardwareConcurrency ?? 8) > 6 ? 11000 : 5900)
-  return <Canvas dpr={[1, 1.55]} camera={{ position: [0, 0, 4.85], fov: 43 }}
+export default function ParticleScene({ signals, onReady, count: density, variant, compact }) {
+  const count = density ?? (compact ? 2800 : variant === 'contact' ? 4600 : (navigator.hardwareConcurrency ?? 8) > 6 ? 11000 : 5900)
+  return <Canvas dpr={compact ? 1 : [1, 1.55]} camera={{ position: [0, 0, 4.85], fov: 43 }}
     gl={{ alpha: true, antialias: false, powerPreference: 'low-power' }}>
     <Points key={count} signals={signals} count={count} />
     <RenderStatus onReady={onReady} />

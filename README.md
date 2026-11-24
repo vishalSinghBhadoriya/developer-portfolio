@@ -43,7 +43,7 @@ Open the URL Vite prints with the `/developer-portfolio/` prefix. The production
 
 Desktop scroll effects use GSAP and ScrollTrigger. Narrow-screen reveals start through IntersectionObserver. The particle vertex shader blends deterministic ribbon, wave, and prism geometry and applies a procedural flow field. Scroll and pointer input reach the render loop through refs.
 
-The hero and contact scenes load near the viewport and dispose their renderers when they leave it. Pixel ratio drops when frame times stay high. The playground uses a capped Canvas 2D renderer when WebGL is unavailable. Case studies, the playground, Motion transitions, Redux Toolkit, and WebGL are split into separate production chunks.
+The hero and contact scenes load near the viewport and dispose their renderers when they leave it. Pixel ratio drops when frame times stay high. The mobile hero caps WebGL at 2,800 particles and one device pixel per CSS pixel. It uses a smaller animated Canvas 2D fallback when WebGL is unavailable. Reduced motion keeps the hero still. Case studies, the playground, Motion transitions, Redux Toolkit, and WebGL are split into separate production chunks.
 
 ## GitHub Pages deployment
 
