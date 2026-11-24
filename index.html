@@ -11,6 +11,54 @@
   <link rel="preload" href="/particles-ribbon.webp" as="image" type="image/webp" fetchpriority="high" media="(max-width: 949px)">
   <link rel="icon" href="/vb.svg" type="image/svg+xml">
   <title>Vishal Bhadoriya | React Frontend Developer</title>
+  <style>
+    #startup-loader {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: grid;
+      place-content: center;
+      justify-items: center;
+      gap: 16px;
+      pointer-events: none;
+      color: #f4f4f5;
+      background: radial-gradient(ellipse at center, #211536, #08090d 56%);
+    }
+    .startup-mark {
+      display: grid;
+      place-content: center;
+      width: 56px;
+      height: 56px;
+      border: 1px solid #69518b;
+      font: 700 20px / 1 system-ui, sans-serif;
+      letter-spacing: -.06em;
+    }
+    .startup-mark b { color: #c4b5fd; }
+    .startup-track { width: 88px; height: 2px; overflow: hidden; background: #38294c; }
+    .startup-track::after {
+      content: "";
+      display: block;
+      width: 42%;
+      height: 100%;
+      background: #c4b5fd;
+      animation: startup-scan 850ms ease-in-out infinite alternate;
+    }
+    .startup-label { font: 11px / 1.4 system-ui, sans-serif; color: #c4b5fd; }
+    @keyframes startup-scan { to { transform: translateX(138%); } }
+    @media (prefers-reduced-motion: reduce) {
+      .startup-track::after { animation: none; }
+    }
+  </style>
+  <noscript><style>#startup-loader { display: none; }</style></noscript>
 </head>
-<body><div id="root"></div><script type="module" src="/src/main.jsx"></script></body>
+<body>
+  <div id="startup-loader" role="status">
+    <div class="startup-mark" aria-hidden="true"><span>VB<b>.</b></span></div>
+    <div class="startup-track" aria-hidden="true"></div>
+    <span class="startup-label">Loading portfolio</span>
+  </div>
+  <noscript>This portfolio requires JavaScript to run.</noscript>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
 </html>

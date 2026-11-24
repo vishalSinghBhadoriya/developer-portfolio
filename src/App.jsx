@@ -1,5 +1,5 @@
 import { playgroundPath } from './routePaths'
-import { lazy, Suspense, useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Link, Route, Routes, useLocation } from 'react-router'
 import { ArrowDown, ArrowUp, ArrowUpRight, Command, Menu, X } from 'lucide-react'
 import { Action, ErrorBoundary } from './components'
@@ -149,6 +149,24 @@ function Footer({ reduced }) {
   </footer>
 }
 
+function StartupReady() {
+  useLayoutEffect(() => {
+    const loader = document.getElementById('startup-loader')
+    if (!loader || loader.dataset.leaving) return
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches || !loader.animate) {
+      loader.remove()
+      return
+    }
+    loader.dataset.leaving = 'true'
+    loader.setAttribute('aria-hidden', 'true')
+    const remove = () => loader.remove()
+    loader.animate([{ opacity: 1 }, { opacity: 0 }], {
+      duration: 220, easing: 'ease-out', fill: 'forwards',
+    }).finished.then(remove, remove)
+  }, [])
+  return null
+}
+
 export default function App() {
   const location = useLocation()
   const previous = useRef(null)
@@ -189,11 +207,12 @@ export default function App() {
     <Header reduced={reduced} pointer={pointer} commandOpen={commandOpen} onCommand={() => setCommandOpen(true)} />
     <CommandPalette open={commandOpen} onClose={() => setCommandOpen(false)} />
     <Cursor enabled={pointer && !reduced} />
-    <ErrorBoundary key={location.pathname} fallback={<main id="main" className="case shell"><h1>Something went wrong.</h1><Action href={import.meta.env.BASE_URL}>Reload the portfolio</Action></main>}>
+    <ErrorBoundary key={location.pathname} fallback={<main id="main" className="case shell"><StartupReady /><h1>Something went wrong.</h1><Action href={import.meta.env.BASE_URL}>Reload the portfolio</Action></main>}>
       <div key={location.pathname} className="route-view">
         {!reduced && location.pathname !== '/' &&
           <Suspense fallback={null}><RouteTransition /></Suspense>}
-        <Suspense fallback={<main id="main" className="case shell" aria-busy="true">Loading case study…</main>}>
+        <Suspense fallback={<main id="main" className="case shell" aria-busy="true">Loading page…</main>}>
+          <StartupReady />
           <Routes location={location}>
             <Route index element={<Home />} />
             <Route path="work/:slug" element={<CaseStudy />} />
