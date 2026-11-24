@@ -82,13 +82,13 @@ function Points({ signals, count }) {
   const { ribbon, wave, prism, seed } = useMemo(() => makeParticles(count), [count])
   const uniforms = useMemo(() => ({
     uTime: { value: 0 },
-    uMorph: { value: 0 },
+    uMorph: { value: signals.current.form ?? signals.current.scroll * 2 },
     uScroll: { value: 0 },
     uVelocity: { value: 0 },
     uDpr: { value: 1 },
     uPointer: { value: new Vector2() },
     uInfluence: { value: 0 },
-  }), [])
+  }), [signals])
 
   useFrame((_, delta) => {
     const step = Math.min(delta, .05)

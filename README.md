@@ -7,7 +7,7 @@ A React portfolio for frontend engineering and creative development. [Visit the 
 - Fullscreen GPU particle sculpture with scroll morphing, pointer displacement, adaptive rendering, and a still fallback.
 - Interactive previews and technical case studies for BuyNest, TaskSphere, and Boca En Boca.
 - Developer Playground with adjustable GSAP and particle demos, a Redux Toolkit store, debounced search, and an interactive sorting visualization.
-- Searchable command palette with Ctrl+K or Cmd+K, keyboard navigation, résumé download, and email copy.
+- Searchable command palette with Ctrl+K or Cmd+K, keyboard navigation, resume download, and email copy.
 - Responsive layouts, reduced-motion support, and a keyboard-accessible technology map and project diagrams.
 
 ## Technology stack
@@ -39,7 +39,7 @@ Open the URL Vite prints with the `/developer-portfolio/` prefix. The production
 | `src/ParticleField.jsx`, `src/ParticleScene.jsx`, `src/particleGeometry.js` | Particle geometry, WebGL rendering, and fallbacks |
 | `src/motion.js`, `src/RouteTransition.jsx` | GSAP, ScrollTrigger, Lenis, and deferred Motion effects |
 | `src/assets.js`, `src/routePaths.js`, `vite.config.js` | Base-aware public assets and static route entries |
-| `public/` | WebP previews, still particle artwork, favicon, and public résumé |
+| `public/` | WebP previews, still particle artwork, favicon, and public resume |
 
 Desktop scroll effects use GSAP and ScrollTrigger. Narrow-screen reveals start through IntersectionObserver. The particle vertex shader blends deterministic ribbon, wave, and prism geometry and applies a procedural flow field. Scroll and pointer input reach the render loop through refs.
 
@@ -57,4 +57,4 @@ Vite and React Router share the `/developer-portfolio/` base path. The build emi
 
 Edit `src/data.js` and `src/caseDetails.js` to update portfolio content. Store optional settings in `.env.local`. Set `VITE_PORTRAIT_URL` to a public image URL or a path such as `/portrait.jpg` inside `public/`. Set `VITE_PUBLIC_PHONE` only to display a number publicly. Vite exposes all configured `VITE_` values in the client bundle.
 
-Replace the downloadable résumé at `public/Vishal_Bhadoriya_Frontend_Developer.pdf` with a copy intended for public sharing.
+Replace the downloadable resume at `public/Vishal_Bhadoriya_Frontend_Developer.pdf` with a copy intended for public sharing.

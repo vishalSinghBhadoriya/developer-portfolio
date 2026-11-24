@@ -11,13 +11,14 @@ import Work from './ProjectStories'
 import Toolkit from './Toolkit'
 
 const headline = ['Interfaces', 'in motion.']
+const defaultHeroForm = forms.indexOf('Geometry')
 
 function Hero() {
   const area = useRef(null)
   const art = useRef(null)
   const formLabel = useRef(null)
-  const input = useRef({ x: 0, y: 0, inside: false, form: null, scroll: 0, velocity: 0, updated: 0 })
-  const [form, setForm] = useState(null)
+  const input = useRef({ x: 0, y: 0, inside: false, form: defaultHeroForm, scroll: 0, velocity: 0, updated: 0 })
+  const [form, setForm] = useState(defaultHeroForm)
   const pointer = usePointerField(art, input, 12)
   const scramble = useScramble(formLabel)
   useParticleScroll(area, input)
@@ -46,7 +47,7 @@ function Hero() {
         <p className="hero-description" data-hero-note>I build React applications and interactive 3D interfaces, from e-commerce storefronts to analytics dashboards.</p>
         <div className="hero-actions" data-hero-note>
           <Action className="primary" to="/#work" icon={<ArrowDown size={16} />}>Explore work</Action>
-          <Action href={profile.resume} download icon={<ArrowDownToLine size={16} />}>Download résumé</Action>
+          <Action href={profile.resume} download icon={<ArrowDownToLine size={16} />}>Download resume</Action>
         </div>
       </div>
       <div className="hero-base mono">
@@ -55,7 +56,7 @@ function Hero() {
           <button type="button" aria-label="Auto scroll morph" aria-pressed={form === null} onClick={() => choose(null)}>Auto</button>
           {forms.map((name, index) => <button type="button" key={name} aria-pressed={form === index} onClick={() => choose(index)}>{name}</button>)}
         </div>
-        <span className="hero-mode" ref={formLabel} aria-hidden="true">SCROLL MORPH</span>
+        <span className="hero-mode" ref={formLabel} aria-hidden="true">{forms[defaultHeroForm].toUpperCase()}</span>
       </div>
     </div>
   </section>

@@ -94,7 +94,7 @@ export function Contact() {
       <div className="contact-actions">
         <Action className="primary" onClick={copyEmail}
           icon={status === 'Email copied' ? <Check size={16} /> : <Copy size={16} />}>Copy email</Action>
-        <Action href={profile.resume} download icon={<ArrowDownToLine size={16} />}>Download résumé</Action>
+        <Action href={profile.resume} download icon={<ArrowDownToLine size={16} />}>Download resume</Action>
         {profile.phone && <Action href={'tel:' + profile.phone}>{profile.phone}</Action>}
       </div>
       <p className="copy-status mono" role="status">{status}</p>

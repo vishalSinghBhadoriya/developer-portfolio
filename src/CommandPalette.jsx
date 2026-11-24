@@ -9,7 +9,7 @@ const commands = [
   ['Toolkit', 'Section', '/#toolkit'], ['Professional journey', 'Section', '/#experience'],
   ['Contact', 'Section', '/#contact'], ['Developer Playground', 'Playground', playgroundPath],
   ...projects.map(({ name, slug }) => [name + ' case study', 'Project', workPath(slug)]),
-  ['Download résumé', 'Download', profile.resume],
+  ['Download resume', 'Download', profile.resume],
   ['Copy email address', 'Clipboard', profile.email],
   ['GitHub', 'External', profile.github], ['LinkedIn', 'External', profile.linkedin],
 ]
