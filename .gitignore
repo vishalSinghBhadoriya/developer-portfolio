@@ -1,0 +1,27 @@
+# Dependencies and build output
+node_modules/
+dist/
+dist-ssr/
+coverage/
+playwright-report/
+test-results/
+.vite/
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+.npmrc
+*.pem
+*.key
+*.p12
+*.pfx
+.vercel/
+
+# Editor, OS and debug output
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
+*.tsbuildinfo
