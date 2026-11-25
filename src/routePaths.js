@@ -1,4 +1,7 @@
 export const projectSlugs = {
+  habitat: 'habitat',
+  velocity: 'velocity',
+  reboot: 'reboot',
   buyNest: 'buynest',
   taskSphere: 'tasksphere',
   bocaEnBoca: 'boca-en-boca',

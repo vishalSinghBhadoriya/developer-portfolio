@@ -2,7 +2,21 @@ import process from 'node:process'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwind from '@tailwindcss/vite'
-import { staticRoutes } from './src/routePaths.js'
+import { featuredProjects } from './src/featuredProjects.js'
+import { staticRoutes, workPath } from './src/routePaths.js'
+
+const featuredRoutes = new Map(featuredProjects.map(project => [workPath(project.slug), project]))
+const htmlEntities = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }
+const escapeHtml = value => value.replace(/[&<>"]/g, character => htmlEntities[character])
+
+function projectHtml(html, project) {
+  const title = escapeHtml(project.name + ' | Vishal Bhadoriya')
+  const description = escapeHtml(project.summary)
+  return html
+    .replace(/<title>[^<]*<\/title>/, () => '<title>' + title + '</title>')
+    .replace(/(<meta property="og:title" content=")[^"]*/, (_, start) => start + title)
+    .replace(/(<meta (?:name="description"|property="og:description") content=")[^"]*/g, (_, start) => start + description)
+}
 
 function staticRouteEntries() {
   return {
@@ -14,7 +28,9 @@ function staticRouteEntries() {
         const entry = bundle['index.html']
         if (entry?.type !== 'asset') this.error('The application HTML is missing.')
         for (const route of staticRoutes) {
-          this.emitFile({ type: 'asset', fileName: route.slice(1) + '/index.html', source: entry.source })
+          const project = featuredRoutes.get(route)
+          const source = project ? projectHtml(String(entry.source), project) : entry.source
+          this.emitFile({ type: 'asset', fileName: route.slice(1) + '/index.html', source })
         }
         this.emitFile({ type: 'asset', fileName: '404.html', source: entry.source })
       },

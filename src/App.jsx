@@ -1,9 +1,9 @@
-import { playgroundPath } from './routePaths'
+import { playgroundPath, workPath } from './routePaths'
 import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Link, Route, Routes, useLocation } from 'react-router'
 import { ArrowDown, ArrowUp, ArrowUpRight, Command, Menu, X } from 'lucide-react'
 import { Action, ErrorBoundary } from './components'
-import { profile } from './data'
+import { profile, projects } from './data'
 import { magneticHandlers, useMedia, useSmoothScroll } from './motion'
 import Home from './Home'
 import CommandPalette from './CommandPalette'
@@ -11,6 +11,7 @@ import CommandPalette from './CommandPalette'
 const CaseStudy = lazy(() => import('./CaseStudy'))
 const Playground = lazy(() => import('./Playground'))
 const RouteTransition = lazy(() => import('./RouteTransition'))
+const projectsByPath = new Map(projects.map(project => [workPath(project.slug), project]))
 const sections = [
   ['Work', 'work'], ['About', 'about'], ['Toolkit', 'toolkit'], ['Journey', 'experience'], ['Contact', 'contact'],
 ]
@@ -169,6 +170,21 @@ function StartupReady() {
 
 export default function App() {
   const location = useLocation()
+  const pathname = location.pathname.replace(/\/$/, '') || '/'
+  useEffect(() => {
+    const project = projectsByPath.get(pathname)
+    const page = project?.name ?? (pathname === playgroundPath ? 'Developer Playground' : 'Page not found')
+    const title = pathname === '/' ? 'Vishal Bhadoriya | Frontend Developer — React.js & TypeScript' : page + ' | Vishal Bhadoriya'
+    const description = project?.summary ?? 'Vishal Bhadoriya, frontend developer specializing in React.js and TypeScript. Explore HABITAT, VELOCITY, and REBOOT.'
+    document.title = title
+    for (const [selector, value] of [
+      ['meta[name="description"]', description],
+      ['meta[property="og:title"]', title],
+      ['meta[property="og:description"]', pathname === '/' ? 'Explore three frontend case studies across real estate, automotive, and e-commerce.' : description],
+    ]) {
+      document.querySelector(selector)?.setAttribute('content', value)
+    }
+  }, [pathname])
   const previous = useRef(null)
   const [commandOpen, setCommandOpen] = useState(false)
   useEffect(() => {

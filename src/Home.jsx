@@ -35,7 +35,7 @@ function Hero() {
     </div>
     <div className="hero-grid" aria-hidden="true" />
     <div className="hero-content shell">
-      <div className="identity" data-hero-note><strong>{profile.name}</strong><span className="mono"><i /> React Developer</span></div>
+      <div className="identity" data-hero-note><strong>{profile.name}</strong><span className="mono"><i /> Frontend Developer — React.js &amp; TypeScript</span></div>
       <div className="hero-copy">
         <h1 aria-label="Interfaces in motion.">
           {headline.map((line, index) => <span className={'headline-line line-' + index} key={line} aria-hidden="true">
@@ -44,7 +44,7 @@ function Hero() {
             </span>)}
           </span>)}
         </h1>
-        <p className="hero-description" data-hero-note>I build React applications and interactive 3D interfaces, from e-commerce storefronts to analytics dashboards.</p>
+        <p className="hero-description" data-hero-note>I build responsive React and TypeScript applications, from real estate discovery to interactive automotive and e-commerce experiences.</p>
         <div className="hero-actions" data-hero-note>
           <Action className="primary" to="/#work" icon={<ArrowDown size={16} />}>Explore work</Action>
           <Action href={profile.resume} download icon={<ArrowDownToLine size={16} />}>Download resume</Action>

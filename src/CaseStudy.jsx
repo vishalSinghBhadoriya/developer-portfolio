@@ -1,10 +1,11 @@
-import { buyNestMedia } from './assets'
+import { buyNestMedia, publicAsset } from './assets'
 import { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { Action, Preview, SectionLabel, Stack } from './components'
 import { caseDetails } from './caseDetails'
-import { projects } from './data'
+import { archivedProjects, featuredProjects, projects } from './data'
+import { workPath } from './routePaths'
 import { useEditorialMotion } from './motion'
 
 function Architecture({ nodes }) {
@@ -32,31 +33,41 @@ export default function CaseStudy() {
   useEditorialMotion(scope, slug)
 
   useEffect(() => {
-    const previous = document.title
-    const description = document.querySelector('meta[name="description"]')
-    const previousDescription = description.content
-    document.title = (project?.name ?? 'Page not found') + ' | Vishal Bhadoriya'
-    if (project) description.content = project.summary
     document.getElementById('main')?.focus({ preventScroll: true })
-    return () => { document.title = previous; description.content = previousDescription }
   }, [project])
 
   if (!project) return <main id="main" tabIndex={-1} className="case shell" ref={scope}>
     <h1>Page not found.</h1><Action to="/#work">Back to selected work</Action>
   </main>
 
-  const next = projects[(index + 1) % projects.length]
+  const featured = featuredProjects.includes(project)
+  const collection = featured ? featuredProjects : archivedProjects
+  const next = collection[(collection.indexOf(project) + 1) % collection.length]
+  const source = project.source ?? details.source
   return <main id="main" tabIndex={-1} className="case shell" ref={scope}>
-    <Action className="text-action case-back" to="/#work" icon={<ArrowLeft size={17} />}>Selected work</Action>
+    <Action className="text-action case-back" to={featured ? '/#work' : '/#project-archive'} icon={<ArrowLeft size={17} />}>{featured ? 'Selected work' : 'Project archive'}</Action>
     <header className="case-heading">
-      <div><SectionLabel index={'0' + (index + 1)}>{project.type}</SectionLabel><h1>{project.name}<em>.</em></h1></div>
+      <div><SectionLabel index={String(index + 1).padStart(2, '0')}>{project.category ?? project.type}</SectionLabel><h1>{project.name}<em>.</em></h1>
+        {featured && <p>{project.type}</p>}
+      </div>
       <div><p className="case-summary">{project.summary}</p><Stack items={project.stack} />
         <div className="project-actions">
-          <Action className="primary" href={project.url}>Visit live project</Action>
-          {details.source && <Action href={details.source}>Source code</Action>}
+          <Action className="primary" href={project.url} newTab ariaLabel={'Open ' + project.name + ' live website in a new tab'}>Visit live project</Action>
+          {source && <Action href={source} newTab ariaLabel={'Open ' + project.name + ' source code on GitHub in a new tab'}>Source code</Action>}
         </div></div>
     </header>
-    <Preview project={project} interactive />
+    {(project.capture || project.image) && <Preview project={project} interactive />}
+    {project.gallery?.length > 0 && <div className="case-captures project-captures" aria-label={project.name + ' screenshots'}>
+      {project.gallery.map(({ file, width, height, alt, label }) => {
+        const src = publicAsset('projects/' + file)
+        return <figure key={file}>
+          <a href={src} target="_blank" rel="noopener noreferrer" aria-label={'Open ' + project.name + ' ' + label.toLowerCase() + ' screenshot in a new tab'}>
+            <img src={src} width={width} height={height} alt={alt} loading="lazy" decoding="async" />
+          </a>
+          <figcaption>{label}</figcaption>
+        </figure>
+      })}
+    </div>}
     {slug === 'buynest' && <div className="case-captures" aria-label="More BuyNest screenshots">
       <figure><img src={buyNestMedia.mobile} width="390" height="780" loading="lazy"
         alt="BuyNest storefront on mobile" /><figcaption>Mobile storefront</figcaption></figure>
@@ -78,6 +89,6 @@ export default function CaseStudy() {
       <h2>What I <em>built.</em></h2>
       <ol>{project.features.map((feature, number) => <li key={feature}><span className="mono" aria-hidden="true">0{number + 1}</span>{feature}</li>)}</ol>
     </section>
-    <Action to={'/work/' + next.slug}>Next project · {next.name}</Action>
+    <Action to={workPath(next.slug)}>Next project · {next.name}</Action>
   </main>
 }

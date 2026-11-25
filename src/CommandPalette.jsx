@@ -2,13 +2,15 @@ import { playgroundPath, workPath } from './routePaths'
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { ArrowDown, ArrowUpRight, CornerDownLeft, Search } from 'lucide-react'
-import { profile, projects } from './data'
+import { archivedProjects, featuredProjects, profile } from './data'
 
 const commands = [
   ['Selected work', 'Section', '/#work'], ['About', 'Section', '/#about'],
   ['Toolkit', 'Section', '/#toolkit'], ['Professional journey', 'Section', '/#experience'],
   ['Contact', 'Section', '/#contact'], ['Developer Playground', 'Playground', playgroundPath],
-  ...projects.map(({ name, slug }) => [name + ' case study', 'Project', workPath(slug)]),
+  ...featuredProjects.map(({ name, slug }) => [name + ' case study', 'Featured project', workPath(slug)]),
+  ['Project archive', 'Section', '/#project-archive'],
+  ...archivedProjects.map(({ name, slug }) => [name + ' case study', 'Archived project', workPath(slug)]),
   ['Download resume', 'Download', profile.resume],
   ['Copy email address', 'Clipboard', profile.email],
   ['GitHub', 'External', profile.github], ['LinkedIn', 'External', profile.linkedin],

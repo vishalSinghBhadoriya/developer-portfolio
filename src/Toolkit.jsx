@@ -1,14 +1,14 @@
 import { useId, useState } from 'react'
 import { Link } from 'react-router'
-import { SectionLabel } from './components'
+import { SectionLabel, Stack } from './components'
 import { projects, skills } from './data'
 
 const nodes = [
   ['React.js', 49, 50, 'Frontend', 'I use component boundaries to keep interface logic reusable across views.'],
-  ['JavaScript', 27, 14, 'Frontend', 'ES6+ and browser APIs underpin the behavior of my React applications.'],
+  ['TypeScript', 27, 14, 'Languages', 'I use TypeScript to model listings, vehicle options, and repair pricing.'],
   ['Tailwind CSS', 68, 13, 'Frontend', 'Shared utility patterns keep responsive layouts and spacing consistent.'],
   ['Context API', 14, 35, 'State', 'BuyNest uses Context API and LocalStorage for the cart and wishlist.'],
-  ['Redux Toolkit', 14, 62, 'State', 'TaskSphere centralizes application state with Redux Toolkit.'],
+  ['Redux Toolkit', 14, 62, 'State', 'HABITAT uses Redux Toolkit for guest favourites and comparison selections.'],
   ['REST APIs', 75, 33, 'Data', 'Boca En Boca uses REST APIs for job listings, profiles, and authentication.'],
   ['Axios', 89, 56, 'Data', 'I use Axios to connect frontend features with REST endpoints.'],
   ['GSAP', 34, 33, 'Motion', 'ScrollTrigger connects scroll progress to timelines, text reveals, and the particle field.'],
@@ -20,19 +20,19 @@ const nodes = [
 ]
 
 const detailsByName = {
-  'React.js': ['Defines reusable UI and keeps rendering declarative.', ['JavaScript', 'Context API', 'Redux Toolkit'], ['buynest', 'tasksphere', 'boca-en-boca']],
-  JavaScript: ['Implements application logic and connects interface events to browser APIs.', ['React.js', 'REST APIs'], ['boca-en-boca']],
-  'Tailwind CSS': ['Applies responsive layout and style rules through reusable utilities.', ['React.js', 'Vite'], ['buynest', 'tasksphere']],
-  'Context API': ['Shares React state across routes and components.', ['React.js', 'JavaScript'], ['buynest']],
-  'Redux Toolkit': ['Organizes shared state into reducers, actions, and slices.', ['React.js', 'Axios'], ['tasksphere', 'playground']],
-  'REST APIs': ['Represent remote resources behind HTTP endpoints.', ['Axios', 'JavaScript'], ['tasksphere', 'boca-en-boca']],
+  'React.js': ['Defines reusable UI and keeps rendering declarative.', ['TypeScript', 'Context API', 'Redux Toolkit'], ['habitat', 'velocity', 'reboot']],
+  TypeScript: ['Types the data and component contracts that power frontend interactions.', ['React.js', 'Vite'], ['habitat', 'velocity', 'reboot']],
+  'Tailwind CSS': ['Applies responsive layout and style rules through reusable utilities.', ['React.js', 'Vite'], ['habitat', 'velocity', 'reboot']],
+  'Context API': ['Shares React state across routes and components.', ['React.js'], ['buynest']],
+  'Redux Toolkit': ['Organizes shared state into reducers, actions, and slices.', ['React.js', 'Axios'], ['habitat', 'tasksphere', 'playground']],
+  'REST APIs': ['Represent remote resources behind HTTP endpoints.', ['Axios', 'TypeScript'], ['tasksphere', 'boca-en-boca']],
   Axios: ['Centralizes HTTP request setup and interception.', ['REST APIs', 'Redux Toolkit'], ['tasksphere']],
-  GSAP: ['Sequences timelines and synchronizes animation with scroll.', ['Three.js', 'Framer Motion'], ['playground']],
-  'Three.js': ['Renders shader-driven objects and particles through WebGL.', ['GSAP', 'React.js'], ['playground']],
-  'Framer Motion': ['Coordinates React component transitions and interaction feedback.', ['React.js', 'GSAP'], ['buynest']],
+  GSAP: ['Sequences timelines and synchronizes animation with scroll.', ['Three.js', 'Framer Motion'], ['velocity', 'reboot', 'playground']],
+  'Three.js': ['Renders shader-driven objects and particles through WebGL.', ['GSAP', 'React.js'], ['reboot', 'playground']],
+  'Framer Motion': ['Coordinates React component transitions and interaction feedback.', ['React.js', 'GSAP'], ['velocity', 'reboot', 'buynest']],
   'Chart.js': ['Turns data series into dashboard visualizations.', ['Axios', 'React.js'], ['tasksphere']],
-  Git: ['Tracks changes in source and supports deployment workflows.', ['Vite', 'JavaScript'], ['buynest']],
-  Vite: ['Runs development builds and bundles production code.', ['Git', 'React.js'], ['buynest', 'playground']],
+  Git: ['Tracks changes in source and supports deployment workflows.', ['Vite', 'TypeScript'], ['habitat', 'velocity', 'reboot']],
+  Vite: ['Runs development builds and bundles production code.', ['Git', 'React.js'], ['habitat', 'velocity', 'reboot']],
 }
 
 export default function Toolkit() {
@@ -86,10 +86,11 @@ export default function Toolkit() {
           </div>
         </div>
       </div>
-      <div className="additional-skills" aria-label="Additional technical skills">
-        {skills.flatMap(([, items]) => items).filter(item =>
-          !nodes.some(([name]) => name === item || item.startsWith(name + ' ('))
-        ).map(item => <span key={item}>{item}</span>)}
+      <div className="skill-categories" aria-label="Technical skills by category">
+        {skills.map(([category, items]) => <section key={category}>
+          <h3>{category}</h3>
+          <Stack items={items} />
+        </section>)}
       </div>
     </div>
   </section>

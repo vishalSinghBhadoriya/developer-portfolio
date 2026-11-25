@@ -11,12 +11,12 @@ export class ErrorBoundary extends Component {
   render() { return this.state.failed ? this.props.fallback : this.props.children }
 }
 
-export function Action({ to, href, children, download, ariaCurrent, className = '', onClick, icon = <ArrowUpRight size={17} /> }) {
+export function Action({ to, href, children, download, ariaCurrent, ariaLabel, newTab, className = '', onClick, icon = <ArrowUpRight size={17} /> }) {
   const magnetic = useMedia('(pointer: fine) and (prefers-reduced-motion: no-preference)')
-  const props = { className: 'action ' + className, 'aria-current': ariaCurrent, onClick, ...magneticHandlers(magnetic) }
+  const props = { className: 'action ' + className, 'aria-current': ariaCurrent, 'aria-label': ariaLabel, onClick, ...magneticHandlers(magnetic) }
   const content = <>{children}{icon}</>
   if (to) return <Link to={to} {...props}>{content}</Link>
-  if (href) return <a href={href} download={download} {...props}>{content}</a>
+  if (href) return <a href={href} download={download} target={newTab ? '_blank' : undefined} rel={newTab ? 'noopener noreferrer' : undefined} {...props}>{content}</a>
   return <button type="button" {...props}>{content}</button>
 }
 
@@ -25,6 +25,11 @@ export function SectionLabel({ children, index }) {
 }
 
 export function ProjectImage({ project, sizes = '(max-width: 540px) 72vw, (max-width: 790px) 81vw, 63vw', className }) {
+  if (project.capture) {
+    const { file, width, height } = project.capture
+    return <img className={className} src={publicAsset('projects/' + file)} width={width} height={height}
+      alt={project.imageAlt} loading="lazy" decoding="async" />
+  }
   const width = project.slug === 'buynest' ? 1440 : 1320
   const height = project.slug === 'buynest' ? 860 : 760
   const base = project.image.replace(/\.[^.]+$/, '')

@@ -1,4 +1,5 @@
 import { publicAsset } from './assets'
+import { featuredProjects } from './featuredProjects'
 import { projectSlugs } from './routePaths'
 
 const portrait = import.meta.env.VITE_PORTRAIT_URL?.trim()
@@ -13,7 +14,7 @@ export const profile = {
   resume: publicAsset('Vishal_Bhadoriya_Frontend_Developer.pdf'),
 }
 
-export const projects = [
+export const archivedProjects = [
   {
     slug: projectSlugs.buyNest, name: 'BuyNest', type: 'E-commerce Storefront', theme: 'shop', image: '/buynest-storefront.jpg',
     url: 'https://vishalsinghbhadoriya.github.io/BuyNest/',
@@ -51,13 +52,17 @@ export const projects = [
   },
 ]
 
+export { featuredProjects }
+
+export const projects = [...featuredProjects, ...archivedProjects]
+
 export const skills = [
-  ['Frontend development', ['React.js', 'JavaScript (ES6+)', 'HTML5', 'CSS3', 'Tailwind CSS', 'React Router', 'Chart.js']],
-  ['State management', ['Redux Toolkit', 'Context API', 'LocalStorage']],
-  ['APIs and authentication', ['REST APIs', 'Axios', 'Google OAuth', 'JSON']],
-  ['Animation and 3D', ['Framer Motion', 'GSAP', 'Three.js']],
-  ['Development tools', ['Git', 'GitHub', 'GitHub Actions', 'Vite']],
-  ['Architecture and performance', ['Responsive Design', 'Component-Based Architecture', 'Single Page Applications', 'Performance Optimization']],
+  ['Languages', ['TypeScript', 'JavaScript ES6+', 'HTML5', 'CSS3']],
+  ['Frontend', ['React.js', 'Tailwind CSS', 'React Router']],
+  ['State Management', ['Redux Toolkit', 'Context API', 'Zustand']],
+  ['API Integration', ['REST APIs', 'Axios', 'TanStack Query']],
+  ['Animation and Creative Development', ['GSAP', 'ScrollTrigger', 'Three.js', 'Framer Motion', 'Lenis']],
+  ['Tools', ['Git', 'GitHub', 'GitHub Actions', 'Vite', 'Vercel']],
 ]
 
 export const experience = [

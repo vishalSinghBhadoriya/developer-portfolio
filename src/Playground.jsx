@@ -167,10 +167,7 @@ export default function Playground() {
   const [index, setIndex] = useState(0)
   const [name, , Demo, description] = labs[index]
   useEffect(() => {
-    const previous = document.title
-    document.title = 'Developer Playground | Vishal Bhadoriya'
     document.getElementById('main')?.focus({ preventScroll: true })
-    return () => { document.title = previous }
   }, [])
 
   return <main className="lab shell" id="main" tabIndex={-1}>

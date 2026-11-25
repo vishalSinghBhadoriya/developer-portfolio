@@ -26,7 +26,7 @@ export function About() {
         </div>
         <div className="about-content" data-reveal-group>
           {profile.portrait && <img className="about-portrait" src={profile.portrait} alt={profile.name} loading="lazy" decoding="async" />}
-          <p data-reveal>I’m Vishal, a frontend developer in Indore. I build responsive React applications with reusable components, predictable state, and reliable API integrations.</p>
+          <p data-reveal>I’m a frontend developer with 2.5 years of experience building responsive, scalable, and interactive web applications with React.js, TypeScript, and JavaScript. I specialize in reusable component architecture, state management, REST API integration, advanced animations, interactive 3D experiences, and performance-focused user interfaces.</p>
           <div className="philosophy">
             <p className="mono">How I work</p>
             <div className="principle-selector" role="group" aria-label="Developer philosophy">
@@ -53,7 +53,7 @@ export function Journey() {
         <article className="journey-item career" data-reveal-group>
           <div className="journey-date mono">July 2024 – Present</div>
           <div>
-            <p className="mono" data-reveal>Frontend Developer (React.js) · Indore, India</p>
+            <p className="mono" data-reveal>Frontend Developer — React.js &amp; TypeScript · Indore, India</p>
             <h3 data-reveal>JMBliss IT Solutions</h3>
             <div className="achievement-stats">
               {[['15', 'Reusable React components'], ['10', 'REST API endpoints'], ['5', 'Redux Toolkit slices']].map(([amount, label]) =>

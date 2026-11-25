@@ -1,4 +1,43 @@
 export const caseDetails = {
+  habitat: {
+    problem: 'Bring property discovery, evaluation, and listing management into one interface while keeping filtered searches shareable.',
+    architecture: [
+      ['Discovery', 'React Router keeps filter state in the URL so users can return to or share a search.'],
+      ['Client state', 'Redux Toolkit handles shared interaction state for features such as favourites and comparison.'],
+      ['Listings', 'TanStack Query handles asynchronous listing data. The listing wizard uses React Hook Form and Zod to validate owner input.'],
+    ],
+    decisions: [
+      ['Shareable discovery', 'Keep search criteria in the URL and support both list and map views for different browsing needs.'],
+      ['Illustrative property tools', 'Present plan and plot visualizations alongside calculators so visitors can explore a property before contacting an owner.'],
+      ['Responsive motion', 'Responsive layouts pair with native view transitions and animated floor-plan highlights. Reduced-motion styles limit movement.'],
+    ],
+  },
+  velocity: {
+    problem: 'Make a fictional vehicle lineup explorable through imagery, technical comparisons, and configurations visitors can revisit and share.',
+    architecture: [
+      ['Catalogue', 'Typed model and option data feeds lazy React Router pages, filters, and vehicle comparisons.'],
+      ['Studio', 'A validated configuration drives paint variants, line items, and the total price. Share URLs encode the selection.'],
+      ['Garage', 'Zustand persists favourites, saved builds, and comparison selections and validates data on rehydration.'],
+    ],
+    decisions: [
+      ['Image-anchored hotspots', 'Recalculate coordinates from the displayed image and its letterboxing so annotations remain aligned when the viewport changes.'],
+      ['Consistent configuration pricing', 'Validate options against the selected model and deduplicate package IDs before calculating line items and the total.'],
+      ['Motion across input modes', 'GSAP and ScrollTrigger pin photographic crossfades on desktop with motion enabled. Touch and reduced-motion layouts keep the story in normal document flow.'],
+    ],
+  },
+  reboot: {
+    problem: 'Let shoppers explore products and estimate device-specific repair costs before sending an enquiry.',
+    architecture: [
+      ['Catalogue', 'Typed product and repair data define variants, prices, supported models, and repair part grades.'],
+      ['Shop state', 'Zustand persists cart lines, wishlist, comparisons, and selections in the browser.'],
+      ['Routes', 'Lazy React Router pages separate storefront and repair flows. Enquiry utilities build messages for users to review.'],
+    ],
+    decisions: [
+      ['Repair pricing coverage', 'The estimator derives prices from the model and part grade and routes unsupported work to a quote request.'],
+      ['Persisted data validation', 'Rehydration discards stale catalogue IDs and caps cart quantities to current catalogue limits.'],
+      ['Motion and rendering fallbacks', 'GSAP and ScrollTrigger animate the responsive homepage. Motion handles route and estimator transitions. The 3D banner loads separately and uses a still image when WebGL is unavailable.'],
+    ],
+  },
   buynest: {
     source: 'https://github.com/vishalSinghBhadoriya/BuyNest',
     problem: 'Let shoppers move from browsing to a demo order while preserving their cart and favorites across visits.',
